@@ -1,16 +1,33 @@
-export interface BaseItem {
-    value: number;
+interface BaseItem {
     year: number;
     month: number;
     statementDate: Date;
     isSimulated: boolean;
-    type: string;
 }
 
-export interface Item extends BaseItem {
+// Electricity
+export interface BaseElectricityItem extends BaseItem {
+    dayValue: number;
+    nightValue: number;
+}
+
+export interface ElectricityItem extends BaseElectricityItem {
     id: number;
 }
 
-export interface Items {
-    [key: number]: Item;
+export interface ElectricityItems {
+    [key: number]: ElectricityItem;
+}
+
+//  Water
+export interface BaseWaterItem extends BaseItem {
+    value: number;
+}
+
+export interface WaterItem extends BaseWaterItem {
+    id: number;
+}
+
+export interface WaterItems {
+    [key: number]: WaterItem;
 }
