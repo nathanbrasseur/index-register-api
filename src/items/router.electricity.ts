@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { ElectricityItem, BaseElectricityItem, ElectricityItems } from "./interface";
+import { ElectricityItem, BaseElectricityItem } from "./interface";
 import * as ItemService from "../services/service.electricity";
 
 export const itemsRouter = express.Router();

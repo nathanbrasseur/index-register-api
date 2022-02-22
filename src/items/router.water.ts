@@ -1,13 +1,12 @@
 import express, { Request, Response } from "express";
-import { WaterItem, BaseWaterItem, WaterItems } from "./interface";
-import * as ItemService from "../services/service.water";
-
+import { WaterItem, BaseWaterItem } from "./interface";
+import * as WaterService from "../services/service.water";
 export const itemsRouter = express.Router();
 
 // GET items
 itemsRouter.get("/", async (req: Request, res: Response) => {
     try {
-        const items: WaterItem[] = await ItemService.findAll();
+        const items: WaterItem[] = await WaterService.findAll();
         res.status(200).send(items);
     } catch (e: any) {
         res.status(500).send(e.message);
@@ -19,7 +18,7 @@ itemsRouter.get("/:id", async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
 
     try {
-        const item: WaterItem = await ItemService.find(id);
+        const item: WaterItem | undefined = await WaterService.find(id);
 
         if (item) {
             return res.status(200).send(item);
@@ -35,7 +34,7 @@ itemsRouter.get("/:id", async (req: Request, res: Response) => {
 itemsRouter.post("/", async (req: Request, res: Response) => {
     try {
         const item: BaseWaterItem = req.body;
-        const newItem = await ItemService.create(item);
+        const newItem = await WaterService.create(item);
         res.status(201).json(newItem);
     } catch (e: any) {
         res.status(500).send(e.message);
@@ -49,14 +48,14 @@ itemsRouter.put("/:id", async (req: Request, res: Response) => {
     try {
         const itemUpdate: WaterItem = req.body;
 
-        const existingItem: WaterItem = await ItemService.find(id);
+        const existingItem: WaterItem | undefined = await WaterService.find(id);
 
         if (existingItem) {
-            const updatedItem = await ItemService.update(id, itemUpdate);
+            const updatedItem = await WaterService.update(id, itemUpdate);
             return res.status(200).json(updatedItem);
         }
 
-        const newItem = await ItemService.create(itemUpdate);
+        const newItem = await WaterService.create(itemUpdate);
 
         res.status(201).json(newItem);
     } catch (e: any) {
@@ -64,11 +63,10 @@ itemsRouter.put("/:id", async (req: Request, res: Response) => {
     }
 });
 
-
 itemsRouter.delete("/:id", async (req: Request, res: Response) => {
     try {
         const id: number = parseInt(req.params.id, 10);
-        await ItemService.remove(id);
+        await WaterService.remove(id);
 
         res.sendStatus(204);
     } catch (e: any) {

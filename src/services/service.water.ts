@@ -1,41 +1,59 @@
-import { WaterItem, WaterItems, BaseWaterItem } from "../items/interface";
-let items: WaterItems = {
-    1: {
+import { WaterItem, BaseWaterItem } from "../items/interface";
+let items: WaterItem[] = [
+    {
         id: 1,
-        value: 11,
+        value: 4.758,
+        usage: 4.758,
         year: 2021,
-        month: 11,
+        month: 9,
         statementDate: new Date(2021, 12, 2),
         isSimulated: false
     },
-    2: {
+    {
         id: 2,
-        value: 11,
+        value: 5.131,
+        usage: 4.758,
+        year: 2021,
+        month: 10,
+        statementDate: new Date(2021, 12, 2),
+        isSimulated: false
+    },
+    {
+        id: 3,
+        value: 5.264,
+        usage: 4.758,
         year: 2021,
         month: 11,
         statementDate: new Date(2021, 12, 2),
         isSimulated: false
     },
-    3: {
-        id: 3,
-        value: 11,
+    {
+        id: 4,
+        value: 2.264,
+        usage: 4.758,
         year: 2021,
-        month: 11,
-        statementDate: new Date(2021, 12, 2),
+        month: 12,
+        statementDate: new Date(2022, 1, 2),
         isSimulated: false
     }
-};
+];
 
 export const findAll = async (): Promise<WaterItem[]> => Object.values(items);
-export const find = async (id: number): Promise<WaterItem> => items[id];
+
+export const find = async (id: number): Promise<WaterItem | undefined> => {
+    return items.find(o => o.id === id);
+};
+
 export const create = async (newItem: BaseWaterItem): Promise<WaterItem> => {
     const id = new Date().valueOf();
-    items[id] = {
+    let item = {
         id,
         ...newItem,
-    };
-    return items[id];
+    }
+    items.push(item);
+    return item;
 };
+
 export const update = async (
     id: number,
     itemUpdate: BaseWaterItem
